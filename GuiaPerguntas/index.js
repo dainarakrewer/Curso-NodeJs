@@ -1,27 +1,34 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+const connection = require('./database/database')
+
+connection.authenticate()
+    .then(() => {
+        console.log('Conexão feita com sucesso!')
+    })
+    .catch(err => {
+        console.log(err)
+    })
 
 app.set('view engine', 'ejs')
+app.use(express.static('public'))
 
-app.get('/:nome/:lang', (req, res) => {
-    var nome = req.params.nome
-    var lang = req.params.lang
-    var exibirMsg = false
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
-    var produtos = [
-        {nome: 'Teste', preco: 1.00},
-        {nome: 'Teste 1', preco: 2.00},
-        {nome: 'Teste 2', preco: 3.00},
-    ]
+app.get('/', (req, res) => {
+    res.render('index')
+})
 
-    res.render('index', {
-        nome: nome,
-        lang: lang,
-        empresa: 'CloudCRM',
-        inscritos: 8000,
-        msg: exibirMsg,
-        produtos: produtos
-    })
+app.get('/perguntar', (req, res) => {
+    res.render('perguntar')
+})
+
+app.post('/salvarPergunta', (req, res) => {
+    let titulo = req.body.titulo
+    let descricao = req.body.descricao
+    res.send('Formulário recebido! Título: ' + titulo + ' e Descrição: ' + descricao)
 })
 
 app.listen(8080, () => {

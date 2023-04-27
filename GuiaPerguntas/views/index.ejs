@@ -1,32 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <title>Guia Perguntas</title>
-</head>
+<%- include('partials/header') %>
 <body>
-<h1>Guia Perguntas</h1>
-<hr>
-<h3>Lista de perguntas</h3>
-
-<p>Nome: <%= nome %></p>
-<p>Linguagem: <%= lang %></p>
-<p>Empresa: <%= empresa %></p>
-<p>Inscritos: <%= inscritos %></p>
-
-<hr>
-<% if(msg == true){ %>
-    <h3>Isso é uma mensagem de erro!</h3>
-<%} else { %>
-    <h3>Tudo certo!</h3>
-<%}%>
-
-<hr>
-<% produtos.forEach((produto) => {%>
-    <p>Produto: <%= produto.nome %></p>
-    <p>Preço: <%= produto.preco %></p>
-<%})%>
+<%- include('partials/navbar') %>
+<h1>Estilo do Bootstrap</h1>
 </body>
-</html>
+<%- include('partials/footer') %>
