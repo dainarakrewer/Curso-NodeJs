@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const connection = require('./database/database')
 const Pergunta = require('./database/Pergunta')
+const Resposta = require('./database/Resposta')
 
 connection.authenticate()
     .then(() => {
@@ -38,6 +39,21 @@ app.post('/salvarPergunta', (req, res) => {
         descricao: req.body.descricao
     }).then(() =>{
         res.redirect('/')
+    })
+})
+
+app.get('/pergunta/:id', (req, res) => {
+    let id = req.params.id
+    Pergunta.findOne({
+        where: {id: id},
+    }).then(pergunta => {
+        if(pergunta != undefined) {
+            res.render('pergunta', {
+                pergunta: pergunta
+            })
+        } else {
+            res.redirect('/')
+        }
     })
 })
 
