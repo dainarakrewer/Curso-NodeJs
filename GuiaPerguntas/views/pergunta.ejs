@@ -6,12 +6,22 @@
     <hr>
     <p class="mt-4 mb-4"><%= pergunta.descricao %></p>
     <hr>
-    <form>
+    <form method="post" action="/salvarResposta">
         <h3 class="mt-4 mb-3">Resposta</h3>
         <textarea placeholder="Digite sua resposta" class="form-control mt-3 mb-3" name="corpo"></textarea>
-        <input type="hidden" name="pergunta" value="<%= pergunta.id %>">
+        <input type="hidden" name="perguntaId" value="<%= pergunta.id %>">
         <button type="submit" class="btn btn-primary">Responder</button>
     </form>
+    <hr>
+    <h3 class="mt-4 mb-3">Respostas</h3>
+    <hr>
+    <% respostas.forEach(resposta => {%>
+        <div class="card mt-4 mb-3">
+            <div class="card-body">
+                <p><%= resposta.corpo %></p>
+            </div>
+        </div>
+    <% }) %>
 </div>
 </body>
 <%- include('partials/footer') %>

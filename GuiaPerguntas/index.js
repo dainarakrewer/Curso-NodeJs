@@ -16,13 +16,15 @@ connection.authenticate()
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
-    Pergunta.findAll({ raw: true, order: [
-            ['id', 'desc']        
-        ]}).then(perguntas => {
+    Pergunta.findAll({
+        raw: true, order: [
+            ['id', 'desc']
+        ]
+    }).then(perguntas => {
         res.render('index', {
             perguntas: perguntas
         })
@@ -37,7 +39,7 @@ app.post('/salvarPergunta', (req, res) => {
     Pergunta.create({
         titulo: req.body.titulo,
         descricao: req.body.descricao
-    }).then(() =>{
+    }).then(() => {
         res.redirect('/')
     })
 })
@@ -47,13 +49,28 @@ app.get('/pergunta/:id', (req, res) => {
     Pergunta.findOne({
         where: {id: id},
     }).then(pergunta => {
-        if(pergunta != undefined) {
-            res.render('pergunta', {
-                pergunta: pergunta
+        if (pergunta != undefined) {
+            Resposta.findAll({
+                where: {perguntaId: pergunta.id},
+                order: [['id', 'DESC']]
+            }).then(respostas => {
+                res.render('pergunta', {
+                    pergunta: pergunta,
+                    respostas: respostas
+                })
             })
         } else {
             res.redirect('/')
         }
+    })
+})
+
+app.post('/salvarResposta', (req, res) => {
+    Resposta.create({
+        corpo: req.body.corpo,
+        perguntaId: req.body.perguntaId
+    }).then(() => {
+        res.redirect('/pergunta/' + this.perguntaId)
     })
 })
 
